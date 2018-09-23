@@ -3,13 +3,13 @@ MAINTAINER Richard <nibocn@gmail.com>
 
 ENV TZ=Asia/Shanghai
 
-RUN apk add --no-cache --update-cache docker openssh \
+RUN yum makecache fast \
+    && yum install -y openssh-server \
     && ssh-keygen -t rsa -f /etc/ssh/ssh_host_rsa_key -N '' \
-    && sed -i s/#PermitRootLogin.*/PermitRootLogin\ yes/ /etc/ssh/sshd_config \
     && echo "root:root" | chpasswd \
-    && mkdir -p /opt/jenkins \
-    && rm -rf /var/cache/apk/* \
-    && rm -rf /tmp/*
+    && yum clean all \
+    && rm -rf /var/cache/yum/*
+
 
 VOLUME /opt/jenkins
 
